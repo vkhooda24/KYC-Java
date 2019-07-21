@@ -3,7 +3,6 @@ package com.vkhooda24.knowyourcountry.app;
 import android.app.Activity;
 import android.app.Application;
 import com.vkhooda24.knowyourcountry.dagger.DaggerAppComponent;
-import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
