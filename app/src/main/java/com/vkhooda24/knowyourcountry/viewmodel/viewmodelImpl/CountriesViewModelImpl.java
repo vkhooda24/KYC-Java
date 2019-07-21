@@ -2,7 +2,6 @@ package com.vkhooda24.knowyourcountry.viewmodel.viewmodelImpl;
 
 import com.vkhooda24.knowyourcountry.domain.apis.CountriesApi;
 import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSource;
-import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSourceImpl;
 import com.vkhooda24.knowyourcountry.domain.model.Countries;
 import com.vkhooda24.knowyourcountry.viewmodel.CountriesViewModel;
 import io.reactivex.Observable;
@@ -18,14 +17,13 @@ public class CountriesViewModelImpl implements CountriesViewModel {
 
 
     private CountriesApi countriesApi;
-    private AppDataSource<String, String> mapDataSource;
-    private AppDataSource<String, String> valueDataSource;
+    private AppDataSource<String, String> appDataSource;
+    private AppDataSource<String, Integer> integerAppDataSource;
 
-    public CountriesViewModelImpl(CountriesApi countriesApi) {
+    public CountriesViewModelImpl(CountriesApi countriesApi, AppDataSource appDataSource) {
         this.countriesApi = countriesApi;
-        mapDataSource = new AppDataSourceImpl(String.class, String.class);
-        valueDataSource = new AppDataSourceImpl(String.class);
-
+        this.appDataSource = appDataSource;
+        this.integerAppDataSource = appDataSource;
     }
 
     @Override
@@ -33,8 +31,11 @@ public class CountriesViewModelImpl implements CountriesViewModel {
 
         Observable<List<Countries>> countriesListService = countriesApi.getCountriesList(regionName);
 
-        mapDataSource.updateCache("Hello");
-        String cacheValue = mapDataSource.get();
+        appDataSource.updateCache("Hello");
+        String cacheValue = appDataSource.get();
+
+        integerAppDataSource.updateCache("intData", 1);
+        Integer integerCacheValue = integerAppDataSource.get("intData");
 
         return countriesListService
                 .subscribeOn(Schedulers.io())

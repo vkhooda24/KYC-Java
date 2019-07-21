@@ -9,19 +9,14 @@ import java.util.HashMap;
 public class AppDataSourceImpl implements AppDataSource {
 
     private final String DEFAULT_VALUE = "cacheDefaultValue";
-    private HashMap<Object, Object> hashMap = new HashMap<>();
+    private HashMap<Object, Object> hashMap;
 
-
-    public AppDataSourceImpl(Type value) {
-        this(null, value);
-    }
-
-    public AppDataSourceImpl(Type key, Type value) {
+    public AppDataSourceImpl() {
         init();
     }
 
-    protected void init() {
-
+    private void init() {
+        hashMap = new HashMap<>();
     }
 
     @Override
@@ -39,17 +34,16 @@ public class AppDataSourceImpl implements AppDataSource {
 
     @Override
     public void updateCache(Object key, Object value) {
-
+        hashMap.put(key, value);
     }
 
     @Override
     public void updateCache(Object value) {
         hashMap.put(DEFAULT_VALUE, value);
-
     }
 
     @Override
     public void clear() {
-
+        hashMap.clear();
     }
 }
