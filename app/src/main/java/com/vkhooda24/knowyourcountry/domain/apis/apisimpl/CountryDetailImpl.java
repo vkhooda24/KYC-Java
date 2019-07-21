@@ -16,7 +16,6 @@ public class CountryDetailImpl implements CountryDetailApi {
 
     public CountryDetailImpl(CountryDetailService countryDetailService) {
         this.countryDetailService = countryDetailService;
-
     }
 
     @Override

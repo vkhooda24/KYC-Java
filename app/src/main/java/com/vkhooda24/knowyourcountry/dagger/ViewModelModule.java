@@ -1,8 +1,8 @@
 package com.vkhooda24.knowyourcountry.dagger;
 
-import com.vkhooda24.knowyourcountry.dagger.ApiModule;
 import com.vkhooda24.knowyourcountry.domain.apis.CountriesApi;
 import com.vkhooda24.knowyourcountry.domain.apis.CountryDetailApi;
+import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSource;
 import com.vkhooda24.knowyourcountry.viewmodel.CountriesViewModel;
 import com.vkhooda24.knowyourcountry.viewmodel.CountryDetailViewModel;
 import com.vkhooda24.knowyourcountry.viewmodel.viewmodelImpl.CountriesViewModelImpl;
@@ -21,13 +21,13 @@ class ViewModelModule {
 
     @Singleton
     @Provides
-    CountriesViewModel provideCountriesViewModel(CountriesApi countriesApi) {
-        return new CountriesViewModelImpl(countriesApi);
+    CountriesViewModel provideCountriesViewModel(CountriesApi countriesApi, AppDataSource<String, String> appDataSource) {
+        return new CountriesViewModelImpl(countriesApi, appDataSource);
     }
 
     @Singleton
     @Provides
-    CountryDetailViewModel provideCountryDetailViewModel(CountryDetailApi countryDetailApi) {
-        return new CountryDetailViewModelImpl(countryDetailApi);
+    CountryDetailViewModel provideCountryDetailViewModel(CountryDetailApi countryDetailApi,  AppDataSource<String, String> appDataSource) {
+        return new CountryDetailViewModelImpl(countryDetailApi, appDataSource);
     }
 }

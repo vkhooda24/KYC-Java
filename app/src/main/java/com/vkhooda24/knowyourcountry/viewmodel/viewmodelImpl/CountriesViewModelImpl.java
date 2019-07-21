@@ -1,6 +1,7 @@
 package com.vkhooda24.knowyourcountry.viewmodel.viewmodelImpl;
 
 import com.vkhooda24.knowyourcountry.domain.apis.CountriesApi;
+import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSource;
 import com.vkhooda24.knowyourcountry.domain.model.Countries;
 import com.vkhooda24.knowyourcountry.viewmodel.CountriesViewModel;
 import io.reactivex.Observable;
@@ -14,17 +15,18 @@ import java.util.List;
  */
 public class CountriesViewModelImpl implements CountriesViewModel {
 
-
     private CountriesApi countriesApi;
+    private AppDataSource<String, List<Countries>> countriesListAppDataSource;
 
-    public CountriesViewModelImpl(CountriesApi countriesApi) {
+    public CountriesViewModelImpl(CountriesApi countriesApi, AppDataSource appDataSource) {
         this.countriesApi = countriesApi;
-
+        this.countriesListAppDataSource = appDataSource;
     }
 
     @Override
     public Observable<List<Countries>> getCountriesList(String regionName) {
-        return countriesApi.getCountriesList(regionName)
+
+        return countriesListAppDataSource.getData(regionName, countriesApi.getCountriesList(regionName))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
