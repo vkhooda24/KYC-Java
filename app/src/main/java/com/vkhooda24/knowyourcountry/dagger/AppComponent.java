@@ -14,9 +14,11 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {
         UiModule.class,
+        AppDataSourceModule.class,
         GlobalModule.class,
         AndroidInjectionModule.class,
         AndroidSupportInjectionModule.class
 })
 public interface AppComponent extends AndroidInjector<KnowYourCountryApplication> {
+
 }
