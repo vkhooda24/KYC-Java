@@ -2,6 +2,7 @@ package com.vkhooda24.knowyourcountry.viewmodel.viewmodelImpl;
 
 import com.vkhooda24.knowyourcountry.domain.apis.CountryDetailApi;
 import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSource;
+import com.vkhooda24.knowyourcountry.domain.model.AppDataCacheKey;
 import com.vkhooda24.knowyourcountry.domain.model.CountryDetail;
 import com.vkhooda24.knowyourcountry.viewmodel.CountryDetailViewModel;
 import io.reactivex.Observable;
@@ -17,9 +18,9 @@ import java.util.List;
 public class CountryDetailViewModelImpl implements CountryDetailViewModel {
 
     private CountryDetailApi countryDetailApi;
-    private AppDataSource<String, String> appDataSource;
+    private AppDataSource<String, List<CountryDetail>> appDataSource;
 
-    public CountryDetailViewModelImpl(CountryDetailApi countryDetailApi, AppDataSource<String, String> appDataSource) {
+    public CountryDetailViewModelImpl(CountryDetailApi countryDetailApi, AppDataSource appDataSource) {
         this.countryDetailApi = countryDetailApi;
         this.appDataSource = appDataSource;
     }
@@ -27,10 +28,7 @@ public class CountryDetailViewModelImpl implements CountryDetailViewModel {
     @Override
     public Observable<CountryDetail> getCountryDetail(String countryName) {
 
-        String value = appDataSource.get();
-
-        Observable<List<CountryDetail>> countryDetail = countryDetailApi.getCountryDetail(countryName);
-        return countryDetail.flatMap(countryDetails -> ObservableFromIterable.fromIterable(countryDetails))
+        return appDataSource.getData(AppDataCacheKey.COUNTRY_DETAIL_.name() + countryName, countryDetailApi.getCountryDetail(countryName)).flatMap(countryDetails -> ObservableFromIterable.fromIterable(countryDetails))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

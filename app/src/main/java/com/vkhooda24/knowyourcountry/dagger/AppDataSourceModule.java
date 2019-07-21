@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import javax.inject.Singleton;
+import java.lang.reflect.Type;
 
 /**
  * Created by Vikram Hooda on 2019-07-20.
@@ -18,11 +19,4 @@ public class AppDataSourceModule {
     static AppDataSource<String, String> provideAppDataSourceModule() {
         return new AppDataSourceImpl();
     }
-
-    @Provides
-    @Singleton
-    static AppDataSource<String, Integer> provideIntegerAppDataSourceModule() {
-        return new AppDataSourceImpl();
-    }
-
 }

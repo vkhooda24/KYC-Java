@@ -15,29 +15,18 @@ import java.util.List;
  */
 public class CountriesViewModelImpl implements CountriesViewModel {
 
-
     private CountriesApi countriesApi;
-    private AppDataSource<String, String> appDataSource;
-    private AppDataSource<String, Integer> integerAppDataSource;
+    private AppDataSource<String, List<Countries>> countriesListAppDataSource;
 
     public CountriesViewModelImpl(CountriesApi countriesApi, AppDataSource appDataSource) {
         this.countriesApi = countriesApi;
-        this.appDataSource = appDataSource;
-        this.integerAppDataSource = appDataSource;
+        this.countriesListAppDataSource = appDataSource;
     }
 
     @Override
     public Observable<List<Countries>> getCountriesList(String regionName) {
 
-        Observable<List<Countries>> countriesListService = countriesApi.getCountriesList(regionName);
-
-        appDataSource.updateCache("Hello");
-        String cacheValue = appDataSource.get();
-
-        integerAppDataSource.updateCache("intData", 1);
-        Integer integerCacheValue = integerAppDataSource.get("intData");
-
-        return countriesListService
+        return countriesListAppDataSource.getData(regionName, countriesApi.getCountriesList(regionName))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
