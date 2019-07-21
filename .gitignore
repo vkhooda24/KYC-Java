@@ -9,7 +9,7 @@
 /build
 /captures
 .externalNativeBuild
-/.idea/codeStyles/
+.idea/codeStyles/Project.xml
 /.idea/gradle.xml
 /.idea/vcs.xml
-/.idea/caches/
+.idea/vcs.xml
