@@ -25,22 +25,37 @@ public class AppDataSourceImpl implements AppDataSource {
     }
 
     @Override
-    public Observable<Object> getData(Object key) {
+    public Observable<Object> getCacheAndRemoteData(Object key) {
         return timeoutCache.get(key);
     }
 
     @Override
-    public Observable<Object> getData(Observable observable) {
-        return getData(null, observable);
+    public Observable<Object> getRemoteData(Observable observable) {
+        return observable;
     }
 
+    /*
+     * This method return first if there any cache data and then update with remote data. Even there is cache data present this
+     * will also make network call and will update the cache for given key
+     * */
     @Override
-    public Observable<Object> getData(Object key, Observable observable) {
+    public Observable<Object> getCacheAndRemoteData(Object key, Observable observable) {
         return Observable.just(1).flatMap((Function<Integer, ObservableSource<Object>>) integer -> {
-            Observable<Object> cacheData = getData(key);
-            return observable.startWith(cacheData).doOnNext(networkData -> updateCache(key, networkData)).distinctUntilChanged();
+            Observable<Object> cacheData = getCacheAndRemoteData(key);
+            return observable.startWith(cacheData).doOnNext(remoteData -> updateCache(key, remoteData)).distinctUntilChanged();
         });
     }
+
+    /*
+     * This method would first check cache data and if exist then network call will not make.
+     * If cache data doesn't exist then network call will make.
+     * */
+    @Override
+    public Observable<Object> getCacheOrRemoteData(Object key, Observable observable) {
+        Observable<Object> cacheData = getCacheAndRemoteData(key);
+        return cacheData.switchIfEmpty(observable).doOnNext(remoteData -> updateCache(key, remoteData));
+    }
+
 
     @Override
     public void updateCache(Object key, Object value) {

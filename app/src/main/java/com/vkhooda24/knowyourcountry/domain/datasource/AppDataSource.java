@@ -8,11 +8,13 @@ import io.reactivex.Observable;
  */
 public interface AppDataSource<K, V> {
 
-    V getData(K k);
+    V getCacheAndRemoteData(K k);
 
-    Observable<V> getData(Observable<V> observable);
+    Observable<V> getRemoteData(Observable<V> observable);
 
-    Observable<V> getData(K k, Observable<V> observable);
+    Observable<V> getCacheAndRemoteData(K k, Observable<V> observable);
+
+    Observable<V> getCacheOrRemoteData(K k, Observable<V> observable);
 
     void updateCache(K k, V v);
 

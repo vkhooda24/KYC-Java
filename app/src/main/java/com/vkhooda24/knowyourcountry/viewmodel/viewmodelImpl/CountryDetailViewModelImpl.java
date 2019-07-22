@@ -28,7 +28,7 @@ public class CountryDetailViewModelImpl implements CountryDetailViewModel {
     @Override
     public Observable<CountryDetail> getCountryDetail(String countryName) {
 
-        return appDataSource.getData(AppDataCacheKey.COUNTRY_DETAIL_.name() + countryName, countryDetailApi.getCountryDetail(countryName)).flatMap(countryDetails -> ObservableFromIterable.fromIterable(countryDetails))
+        return appDataSource.getCacheAndRemoteData(AppDataCacheKey.COUNTRY_DETAIL_.name() + countryName, countryDetailApi.getCountryDetail(countryName)).flatMap(countryDetails -> ObservableFromIterable.fromIterable(countryDetails))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

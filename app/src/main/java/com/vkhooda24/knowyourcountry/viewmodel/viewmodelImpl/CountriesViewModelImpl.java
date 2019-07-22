@@ -26,7 +26,7 @@ public class CountriesViewModelImpl implements CountriesViewModel {
     @Override
     public Observable<List<Countries>> getCountriesList(String regionName) {
 
-        return countriesListAppDataSource.getData(regionName, countriesApi.getCountriesList(regionName))
+        return countriesListAppDataSource.getCacheOrRemoteData(regionName, countriesApi.getCountriesList(regionName))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
