@@ -1,11 +1,10 @@
 package com.vkhooda24.knowyourcountry.domain.datasource;
 
-import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
-import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Vikram Hooda on 2019-07-20.
@@ -14,21 +13,20 @@ public class AppDataSourceImpl implements AppDataSource {
 
     private static final String TAG = AppDataSourceImpl.class.getSimpleName();
 
-    private final String DEFAULT_VALUE = "cacheDefaultValue";
-    private HashMap<Object, Object> hashMap;
+    private static final long TIMEOUT = 60 * 60; // 1 hour
+    private TimeoutCache timeoutCache;
 
     public AppDataSourceImpl() {
         init();
     }
 
     private void init() {
-        hashMap = new HashMap<>();
+        timeoutCache = new TimeoutCacheImpl(TIMEOUT, TimeUnit.SECONDS);
     }
 
     @Override
-    public Observable<Object> getData(Object objKey) {
-        Object key = objKey == null ? DEFAULT_VALUE : objKey;
-        return hashMap.get(key) != null ? Observable.just(hashMap.get(key)) : Observable.empty();
+    public Observable<Object> getData(Object key) {
+        return timeoutCache.get(key);
     }
 
     @Override
@@ -38,25 +36,19 @@ public class AppDataSourceImpl implements AppDataSource {
 
     @Override
     public Observable<Object> getData(Object key, Observable observable) {
-        return Observable.just(1).flatMap(new Function<Integer, ObservableSource<Object>>() {
-            @Override
-            public ObservableSource<Object> apply(Integer integer) throws Exception {
-                Observable<Object> cacheData = getData(key);
-                return observable.startWith(cacheData).doOnNext(networkData -> updateCache(key, networkData)).distinctUntilChanged();
-            }
+        return Observable.just(1).flatMap((Function<Integer, ObservableSource<Object>>) integer -> {
+            Observable<Object> cacheData = getData(key);
+            return observable.startWith(cacheData).doOnNext(networkData -> updateCache(key, networkData)).distinctUntilChanged();
         });
     }
 
     @Override
     public void updateCache(Object key, Object value) {
-        Object dataKey = key == null ? DEFAULT_VALUE : key;
-        hashMap.put(dataKey, value);
-
-        Log.d(TAG, "Data updated successfully for key: " + dataKey.toString());
+        timeoutCache.put(key, value, TIMEOUT);
     }
 
     @Override
     public void clearCache() {
-        hashMap.clear();
+        timeoutCache.clear();
     }
 }
