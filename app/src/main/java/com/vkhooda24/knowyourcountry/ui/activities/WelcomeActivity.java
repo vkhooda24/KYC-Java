@@ -1,11 +1,8 @@
 package com.vkhooda24.knowyourcountry.ui.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import com.vkhooda24.knowyourcountry.R;
-import com.vkhooda24.knowyourcountry.constants.IntentKeys;
 
 /**
  * Created by Vikram Hooda on 1/3/19.
