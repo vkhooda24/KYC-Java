@@ -3,6 +3,7 @@ package com.vkhooda24.knowyourcountry.dagger;
 import com.vkhooda24.knowyourcountry.ui.activities.CountriesListActivity;
 import com.vkhooda24.knowyourcountry.ui.activities.CountryDetailActivity;
 import com.vkhooda24.knowyourcountry.ui.activities.WelcomeActivity;
+import com.vkhooda24.knowyourcountry.ui.fragments.CountriesListFragment;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -20,4 +21,7 @@ public abstract class UiModule {
 
     @ContributesAndroidInjector
     abstract CountryDetailActivity provideCountryDetailActivity();
+
+    @ContributesAndroidInjector
+    abstract CountriesListFragment provideCountriesListFragment();
 }
