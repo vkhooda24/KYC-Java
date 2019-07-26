@@ -16,7 +16,7 @@ public class AppDataSourceModule {
 
     @Provides
     @Singleton
-    static AppDataSource<String, String> provideAppDataSourceModule() {
+    static AppDataSource provideAppDataSourceModule() {
         return new AppDataSourceImpl();
     }
 }
