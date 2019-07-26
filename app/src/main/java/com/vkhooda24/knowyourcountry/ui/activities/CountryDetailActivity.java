@@ -22,7 +22,7 @@ import java.net.URL;
  */
 public class CountryDetailActivity extends Activity {
 
-    @Inject
+//    @Inject //Using @Bind and getting from view model factory, @Provide required for @Inject
     CountryDetailViewModel countryDetailViewModel;
 
     private String countryName = AppConstants.DEFAULT_COUNTRY_NAME;

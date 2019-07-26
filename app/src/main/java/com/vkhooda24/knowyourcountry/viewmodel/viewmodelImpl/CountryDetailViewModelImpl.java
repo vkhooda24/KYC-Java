@@ -1,5 +1,6 @@
 package com.vkhooda24.knowyourcountry.viewmodel.viewmodelImpl;
 
+import android.arch.lifecycle.ViewModel;
 import com.vkhooda24.knowyourcountry.domain.apis.CountryDetailApi;
 import com.vkhooda24.knowyourcountry.domain.datasource.AppDataSource;
 import com.vkhooda24.knowyourcountry.domain.model.AppDataCacheKey;
@@ -10,16 +11,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.internal.operators.observable.ObservableFromIterable;
 import io.reactivex.schedulers.Schedulers;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
  * Created by Vikram Hooda on 12/22/18.
  */
-public class CountryDetailViewModelImpl implements CountryDetailViewModel {
+public class CountryDetailViewModelImpl extends ViewModel implements CountryDetailViewModel {
 
     private CountryDetailApi countryDetailApi;
     private AppDataSource<String, List<CountryDetail>> appDataSource;
 
+    @Inject
     public CountryDetailViewModelImpl(CountryDetailApi countryDetailApi, AppDataSource appDataSource) {
         this.countryDetailApi = countryDetailApi;
         this.appDataSource = appDataSource;

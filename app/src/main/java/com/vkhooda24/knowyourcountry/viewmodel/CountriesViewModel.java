@@ -11,4 +11,8 @@ import java.util.List;
 public interface CountriesViewModel {
 
     Observable<List<Countries>> getCountriesList(String regionName);
+
+    void setRegionName(String regionName);
+
+    String getRegionName();
 }

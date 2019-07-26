@@ -3,13 +3,14 @@ package com.vkhooda24.knowyourcountry.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import com.vkhooda24.knowyourcountry.R;
 import com.vkhooda24.knowyourcountry.constants.IntentKeys;
 
 /**
  * Created by Vikram Hooda on 1/3/19.
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +30,6 @@ public class WelcomeActivity extends Activity {
     }
 
     private void launchCountriesListActivity(String regionName) {
-        Intent intent = new Intent(this, CountriesListActivity.class);
-        intent.putExtra(IntentKeys.REGION_NAME, regionName);
-        startActivity(intent);
+        CountriesListActivity.getCountriesListActivityIntent(this, regionName);
     }
 }
